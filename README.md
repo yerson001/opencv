@@ -72,7 +72,10 @@ rm ../CMakeCache.txt
 
 /opt/opencv/release$ cd ~
 ~~~
-
+## opencv VIZ
+~~~
+–D WITH_VTK=ON ../
+~~~
 
 
 
