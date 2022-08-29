@@ -55,6 +55,11 @@ cmake -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=/usr/local .. -DOPENCV
 
 ~~~
 
+~~~
+cmake -D BUILD_TIFF=ON -D WITH_CUDA=OFF -D ENABLE_AVX=OFF -D WITH_OPENGL=OFF -D WITH_OPENCL=OFF -D OPENCV_PC_FILE_NAME=opencv4.pc -D WITH_IPP=OFF -D WITH_TBB=ON -D BUILD_TBB=ON -D WITH_EIGEN=OFF -D WITH_V4L=OFF -D WITH_VTK=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D CMAKE_BUILD_TYPE=RELEASE -D OPENCV_GENERATE_PKGCONFIG=ON -D CMAKE_INSTALL_PREFIX=/usr/local -D OPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib/modules /opt/opencv/
+~~~
+
+
 ### Error linea 11 -> solo si lo tiene
 ~~~
 "FATAL: In-source builds are not allowed.
@@ -77,6 +82,12 @@ rm ../CMakeCache.txt
 
 /opt/opencv/release$ cd ~
 ~~~
+
+## get version
+~~~
+pkg-config --modversion opencv4
+~~~
+
 ## opencv VIZ
 
 ~~~
