@@ -4,6 +4,7 @@ import time
 import math
 import numba as nb
 rows, cols = 360, 640
+#rows, cols = 720, 1200
 
 DrawLSDLine = True
 LSD_strength_threshold = 6
@@ -74,14 +75,13 @@ def LSD(showImage, src):
     # Detect lines in the image
     # return [[x0,y0,x1,y1], [width], []]
     lines = lsd.detect(gray[top:bottom, left:right])
+     # 濾掉線條和計算strength
 
-    lines = LSDFilter(lines)  # 濾掉線條和計算strength
-
-    # Draw detected lines in the image
+    lines = LSDFilter(lines) 
+    #Draw detected lines in the image
     # if(DrawLSDLine):
     #     for i in range(len(lines)):
-    #         cv2.line(showImage, (lines[i][0][0], lines[i][0][1]),
-    #                  (lines[i][0][2], lines[i][0][3]), (0, 0, 255), 5)
+    #         cv2.line(showImage, (lines[i][0][0], lines[i][0][1]),(lines[i][0][2], lines[i][0][3]), (0, 0, 255), 5)
 
     return lines
 
@@ -304,10 +304,9 @@ def DrawAns(img, crossPoint, theta):
 
 
 if(__name__ == "__main__"):
-#     cap = cv2.VideoCapture('/home/yrsn/Descargas/project_video.mp4')
-    cap = cv2.VideoCapture("/home/yrsn/Dev/ALD/video/video_.mp4")
-    #cap = cv2.VideoCapture(0)
-    #"/home/yrsn/Dev/ALD/video/video_.mp4"
+#     cap = cv2.VideoCapture('/home/yrsn/Dev/TEST/line/test.mp4')
+    #cap = cv2.VideoCapture("/home/fondecyt/Devpy/line/VanshingPoint/test.mp4")
+    cap = cv2.VideoCapture("/home/fondecyt/Vídeos/video.mp4")
     qV, qVTemp, qThetaLeft, qThetaRight = [], [], [], []
     while (1):
     # for i in range(100):
@@ -318,6 +317,31 @@ if(__name__ == "__main__"):
             break
 
         img = cv2.resize(img, (cols, rows))
+        # img1 = cv2.medianBlur(img,5)
+
+
+
+        # th1 = cv2.adaptiveThreshold(img1,255,cv2.ADAPTIVE_THRESH_MEAN_C,\
+        #             cv2.THRESH_BINARY,11,2)
+        # th2 = cv2.adaptiveThreshold(img1,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+        #             cv2.THRESH_BINARY,11,2)
+
+        # #Grafico adyacente de figuras
+        # images = [th1, th2]
+        # titles = ['ADAPTIVE_THRESH_MEAN_C', 'ADAPTIVE_THRESH_GAUSSIAN_C']
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        imgHSV = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+
+        lower = np.array([0,25,41])
+        upper = np.array([68,255,255])
+
+        mask  =cv2.inRange(imgHSV,lower,upper)
+        img = cv2.bitwise_and(img , img, mask = mask)
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
         showImage = img.copy()
 
         totalTime = time.time()
@@ -326,7 +350,7 @@ if(__name__ == "__main__"):
         # s = time.time()
         lsdLines = LSD(showImage, img)
         # print('LSDLines spend time', time.time() -
-        #       s, " ,line amount :", len(lsdLines))
+        #       s, " ,line amounthttps://github.com/NVlabs/instant-ngp", len(lsdLines))
 
         s = time.time()
         crosspoint = CalcLineCrossPoint(showImage, lsdLines)
