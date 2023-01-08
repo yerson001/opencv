@@ -202,18 +202,23 @@ int* GetVanishingPoint(std::vector<std::vector<double>> Lines)
 
     return VanishingPoint;
 }
-
+cv::Mat ResizeImage(cv::Mat &image, float scale)
+{
+    cv::Mat resized;
+    resize(image, resized, cv::Size(image.cols*scale, image.rows*scale), cv::INTER_LINEAR);
+    return resized;
+}
 
 int main()
 {
     std::vector<cv::Mat> Images;			// Input Images will be stored in this list.
     std::vector<std::string> ImageNames;	// Names of input images will be stored in this list.
-    ReadImage("/home/yrsn/Dev/TEST/VanishingPoint/InputImages/", Images, ImageNames);
+    //ReadImage("/home/yrsn/Dev/TEST/VanishingPoint/InputImages/", Images, ImageNames);
 
     Mat image, Image;
 
     VideoCapture cap;
-    cap.open("/home/yrsn/Dev/ALD/video/video_.mp4");
+    cap.open("/home/yrsn/Videos/video.mp4");
 
    if (!cap.isOpened()){ //This section prompt an error message if no video stream is found//
           cout << "No video stream detected" << endl;
@@ -229,6 +234,24 @@ int main()
            cap >> Image;
            // Getting the lines form the image
            std::vector<std::vector<double>> Lines;
+
+           int lowH = 0; int highH = 26;
+           int lowS = 98; int highS = 118;
+           int lowV = 71;  int highV = 183;
+
+           //canny
+           Mat oriImageGray;
+           //imshow("recibido",oriImage);
+           cvtColor(Image, oriImageGray, COLOR_RGB2GRAY);
+           //Canny(oriImageGray, edgeImage, 100, 150, 3);
+           Mat imgHSV;
+
+           cvtColor(Image, imgHSV, COLOR_BGR2HSV);
+           inRange(imgHSV, Scalar(lowH, lowS, lowV), Scalar(highH, highS, highV), oriImageGray);
+           cv::imshow("image",ResizeImage(oriImageGray,0.5));
+
+
+
            Lines = GetLines(Image);
 
            // Get vanishing point

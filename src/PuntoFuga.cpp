@@ -134,6 +134,7 @@ void registrar_recta(float theta, float rho) {
     Theeta.at<float>(rectasRegistradas, 0) = theta;
     rectasRegistradas++;
 }
+
 /*
  * Se gerena una interseccion entre 2 rectas aletatorias si su orientacion no es similar y
  * se guarda la interseccion como un voto si entra en la imagen
@@ -190,7 +191,7 @@ int main(int argc, char **argv) {
     VideoCapture cap; // open the default camera
     //home/yrsn/Dev/ALD/video/video_.mp4
     //VideoCapture cap;
-     cap.open("/home/yrsn/Dev/ALD/video/video_.mp4");
+     cap.open("/home/yrsn/Videos/video_.mp4");
 
     if (!cap.isOpened()){ //This section prompt an error message if no video stream is found//
        cout << "No video stream detected" << endl;

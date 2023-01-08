@@ -7,7 +7,7 @@ using namespace cv;
 
 int main(int argc, char** argv )
 {
-    std::string path = "/home/yrsn/Dev/ProyectSlam/opencv/build/";
+    std::string path = "/home/yrsn/Devcpp/opencv/build/";
     Mat image;
     image = imread(path+"lena.jpg", 1 );
     if ( !image.data )
