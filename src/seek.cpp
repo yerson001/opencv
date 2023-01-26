@@ -16,13 +16,10 @@ bool equal(const Mat& a, const Mat& b){
     return (s[0]==0) && (s[1]==0) && (s[2]==0);
 }
 
-int main(int, char** argv) {
-    string filename(argv[1]);
+int main() {
+    string filename("/home/fondecyt/Vídeos/video.mp4");
     bool skip_frames = false;
-    if(filename == "-s") {
-        skip_frames = true;
-        filename = argv[2];
-    }
+
     VideoCapture streamer(filename);
     VideoCapture seeker(filename);
 
@@ -32,12 +29,12 @@ int main(int, char** argv) {
     Mat streamer_frame;
     Mat seeker_frame;
     while(1) {
-        int next_frame = (int)streamer.get(CV_CAP_PROP_POS_FRAMES);
+        int next_frame = (int)streamer.get(CAP_PROP_POS_FRAMES);
         //cout << "Streamer read" << endl;
         if(!streamer.read(streamer_frame)) {
             break;
         }
-//        imshow("dude", streamer_frame);
+        imshow("dude", streamer_frame);
 //        waitKey();
 
         if(skip_frames && (next_frame % 3) != 0) {
@@ -45,8 +42,9 @@ int main(int, char** argv) {
         }
 
         //cout << "Seeker moved" << endl;
-        bool success = seeker.set(CV_CAP_PROP_POS_FRAMES, next_frame);
+        bool success = seeker.set(CAP_PROP_POS_FRAMES, next_frame);
         if (!success) {
+
             cout << endl << "Fail, coudln't seek: " << next_frame << endl;
         }
         //cout << "Seeker read" << endl;
