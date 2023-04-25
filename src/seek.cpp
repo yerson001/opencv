@@ -1,67 +1,36 @@
-#include <stdio.h>
-#include <iostream>
-#include <iomanip>
-#include <string>
 #include <opencv2/opencv.hpp>
-#include <opencv2/highgui.hpp>
+#include <iostream>
 
 using namespace cv;
 using namespace std;
 
-
-bool equal(const Mat& a, const Mat& b){
-    if ( (a.rows != b.rows) || (a.cols != b.cols) )
-        return false;
-    Scalar s = sum( a - b );
-    return (s[0]==0) && (s[1]==0) && (s[2]==0);
-}
-
 int main() {
-    string filename("/home/fondecyt/Vídeos/video.mp4");
-    bool skip_frames = false;
+    // Matriz de homografía
+    Mat H = (Mat_<double>(3, 3) << 1.26143636, -0.17429638, -154.63456613,
+                                   0.11861404, 1.12960584, -80.40128631,
+                                   0.000234, 0.0004209, 1);
+    
+    // Matrices de puntos de referencia en 3D y 2D
+    Mat points3D = (Mat_<double>(4, 3) << 0, 0, 0,
+                                          1, 0, 0,
+                                          0, 1, 0,
+                                          0, 0, 1);
+    Mat points2D = (Mat_<double>(4, 2) << 500, 200,
+                                          600, 300,
+                                          700, 200,
+                                          600, 100);
 
-    VideoCapture streamer(filename);
-    VideoCapture seeker(filename);
-
-    float nb_frames = (float)streamer.get(CAP_PROP_FRAME_COUNT);
-    cout << "Total nb of frames: " << nb_frames << endl;
-
-    Mat streamer_frame;
-    Mat seeker_frame;
-    while(1) {
-        int next_frame = (int)streamer.get(CAP_PROP_POS_FRAMES);
-        //cout << "Streamer read" << endl;
-        if(!streamer.read(streamer_frame)) {
-            break;
-        }
-        imshow("dude", streamer_frame);
-//        waitKey();
-
-        if(skip_frames && (next_frame % 3) != 0) {
-            continue;
-        }
-
-        //cout << "Seeker moved" << endl;
-        bool success = seeker.set(CAP_PROP_POS_FRAMES, next_frame);
-        if (!success) {
-
-            cout << endl << "Fail, coudln't seek: " << next_frame << endl;
-        }
-        //cout << "Seeker read" << endl;
-        seeker.read(seeker_frame);
-
-        if(!equal(streamer_frame,seeker_frame)){
-            cerr << endl << "Frames are different: " << next_frame << endl;
-            imwrite("streamer.png", streamer_frame);
-            imwrite("seeker.png", seeker_frame);
-            return 1;
-        }
-
-        cout << "\r" << fixed << setprecision(2) << (float)next_frame*100.0 / nb_frames << '%' << flush;
+    // Filtrar las soluciones de la descomposición de la matriz de homografía
+    vector<Mat> Rs, Ts, normals;
+    filterHomographyDecompByVisibleRefpoints(H, points3D, points2D, Rs, Ts, normals);
+    
+    // Imprimir las soluciones
+    for (int i = 0; i < Rs.size(); i++) {
+        cout << "Solución " << i + 1 << ":" << endl;
+        cout << "Rotación:" << endl << Rs[i] << endl;
+        cout << "Traslación:" << endl << Ts[i] << endl;
+        cout << "Normal:" << endl << normals[i] << endl;
     }
-    streamer.release();
-    seeker.release();
 
-    cout << "Seeking works!" << endl;
     return 0;
 }
