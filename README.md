@@ -101,3 +101,26 @@ check yerson001/myslam/README.md
 ~~~
 
 
+~~~
+sudo rm -rf /usr/local/include/opencv4 /usr/local/include/opencv2 /usr/local/share/opencv4 /usr/local/lib/libopencv*
+sudo rm /usr/local/lib/pkgconfig/opencv4.pc
+
+cd opencv/build
+sudo make uninstall
+
+
+cd opencv/build
+sudo make clean
+sudo make cleanall
+
+
+sudo rm /usr/local/lib/cmake/opencv4/OpenCVConfig.cmake
+sudo rm /usr/local/lib/cmake/opencv4/OpenCVConfig-version.cmake
+sudo rm /usr/local/lib/cmake/opencv4/OpenCVModules.cmake
+sudo rm /usr/local/lib/cmake/opencv4/OpenCVModules-release.cmake
+
+sudo nano /etc/environment
+sudo ldconfig
+
+
+~~~
