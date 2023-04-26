@@ -41,6 +41,13 @@ $ opt/ git clone https://github.com/opencv/opencv.git
 $ opt/ git clone https://github.com/opencv/opencv_contrib.git
 ~~~
 ### EN OPENCV --> elegi versión
+
+~~~
+### ver ramas
+git branch
+### listar ramas
+git branch -a
+~~~
 ~~~
 $/opt/ cd opencv
 $ git chekcout 4.4.0  # cualquier version que quieras de opencv
