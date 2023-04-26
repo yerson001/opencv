@@ -47,6 +47,9 @@ $ opt/ git clone https://github.com/opencv/opencv_contrib.git
 git branch
 ### listar ramas
 git branch -a
+
+### descartar cambios locales
+git checkout -- .
 ~~~
 ~~~
 $/opt/ cd opencv
