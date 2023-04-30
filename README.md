@@ -53,7 +53,7 @@ git checkout -- .
 ~~~
 ~~~
 $/opt/ cd opencv
-$ git chekcout 4.4.0  # cualquier version que quieras de opencv
+$ git checkout 4.4.0  # cualquier version que quieras de opencv
 $/opt/opencv$ mkdir release
 
 $/opt/opencv$ cd release
